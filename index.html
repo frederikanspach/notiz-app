@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="de">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Notiz-App</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <main>
+      <!-- Notiz-Sidebar -->
+      <section class="left-side">
+        <section class="left-container">
+          <section class="side-header">
+            <button class="new-note-button">
+              <img src="img/create-new.png" alt="Neue Notiz erstellen" />
+              Neue Notiz erstellen
+            </button>
+          </section>
+          <section class="side-list"></section>
+        </section>
+      </section>
+
+      <!-- Notiz-Inhalt-->
+      <section class="right-side">
+        <section class="note-header">
+          <input
+            id="input-note-header"
+            type="text"
+            placeholder="Überschrift eingeben..."
+            required
+          />
+          <button class="button-option" id="save-note">
+            <img src="img/save-icon.png" alt="Neue Notiz speichern" />
+          </button>
+          <button class="button-option" id="delete-note">
+            <img src="img/delete-icon.png" alt="Notiz löschen" />
+          </button>
+        </section>
+
+        <section class="note-body">
+          <textarea
+            class="input-note-body"
+            id="input-note-body"
+            placeholder="Fang' an eine Notiz zu erstellen"
+          ></textarea>
+        </section>
+      </section>
+    </main>
+    <script src="main.js"></script>
+  </body>
+</html>
