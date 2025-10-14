@@ -10,20 +10,19 @@
     <main>
       <!-- Notiz-Sidebar -->
       <section class="left-side">
-        <section class="left-container">
-          <section class="side-header">
+        <div class="left-container">
+          <div class="side-header">
             <button class="new-note-button">
               <img src="img/create-new.png" alt="Neue Notiz erstellen" />
               Neue Notiz erstellen
             </button>
-          </section>
-          <section class="side-list"></section>
-        </section>
+          <div class="side-list"></div>
+        </div>
       </section>
 
       <!-- Notiz-Inhalt-->
       <section class="right-side">
-        <section class="note-header">
+        <div class="note-header">
           <input
             id="input-note-header"
             type="text"
@@ -36,15 +35,16 @@
           <button class="button-option" id="delete-note">
             <img src="img/delete-icon.png" alt="Notiz löschen" />
           </button>
-        </section>
+        </div>
 
-        <section class="note-body">
+        <div class="note-body">
           <textarea
             class="input-note-body"
             id="input-note-body"
             placeholder="Fang' an eine Notiz zu erstellen"
+            required
           ></textarea>
-        </section>
+        </div>
       </section>
     </main>
     <script src="main.js"></script>

@@ -3,11 +3,7 @@
 const NOTE_STORAGE_KEY = "noteApp";
 let noteArray = [];
 
-// Listener
-document.addEventListener("DOMContentLoaded", init);
-
 function init() {
-  // Listener
   const saveNote = document.getElementById("save-note");
   saveNote.addEventListener("click", () => {
     saveCurrentNote();
@@ -23,21 +19,18 @@ function init() {
     resetNoteEditMode();
   });
 
-  loadFromLocalStorage();
+  noteArray = loadFromLocalStorage();
   appendNotesToHTML();
 }
 
-// Daten aus dem localStorage laden
 function loadFromLocalStorage() {
-  noteArray = JSON.parse(localStorage.getItem(NOTE_STORAGE_KEY)) || [];
+  return JSON.parse(localStorage.getItem(NOTE_STORAGE_KEY)) || [];
 }
 
-// Daten in das localStorage schreiben
 function saveToLocalStorage() {
   localStorage.setItem(NOTE_STORAGE_KEY, JSON.stringify(noteArray));
 }
 
-// Notiz-Daten in HTML anzeigen
 function appendNotesToHTML() {
   // Sortieren des Arrays absteigend
   const sortedNoteArray = noteArray.sort(
@@ -49,7 +42,7 @@ function appendNotesToHTML() {
 
   sortedNoteArray.forEach((note) => {
     const newNoteSection = document.createElement("section");
-    newNoteSection.classList.add("side-box");
+    newNoteSection.classList.add("side-card");
     newNoteSection.id = note.id;
 
     const newNoteHeader = document.createElement("h2");
@@ -98,18 +91,23 @@ function showNoteInEditMode(noteId) {
   let editNoteArray = noteArray.find((item) => item.id === noteId);
   if (!editNoteArray) return;
 
-  // Notiz-Input-Feld erstellen
   const inputNoteHeader = document.getElementById("input-note-header");
   inputNoteHeader.dataset.noteId = noteId;
   inputNoteHeader.value = editNoteArray.title;
 
-  // Notiz-Input-Textarea erstellen
   const inputBody = document.getElementById("input-note-body");
   inputBody.value = editNoteArray.content;
+
+  const oldActiveNote = document.querySelector(".side-card-active");
+  if (oldActiveNote) {
+    oldActiveNote.classList.remove("side-card-active");
+  }
+
+  const activeNote = document.getElementById(noteId);
+  activeNote.classList.add("side-card-active");
 }
 
 function resetNoteEditMode() {
-  // Notiz-Input-Feld leeren
   const inputNoteHeader = document.getElementById("input-note-header");
   inputNoteHeader.value = "";
   delete inputNoteHeader.dataset.noteId;
@@ -118,11 +116,10 @@ function resetNoteEditMode() {
   inputNoteBody.value = "";
 }
 
-// Geänderte Notiz speichern
 function saveCurrentNote() {
   const currentNoteHeader = document.getElementById("input-note-header");
   const currentNoteBody = document.getElementById("input-note-body");
-  let highesItemId;
+  let highesItemObject;
 
   if (currentNoteHeader.dataset.noteId) {
     // Note update
@@ -140,17 +137,17 @@ function saveCurrentNote() {
   } else if (currentNoteHeader.value && currentNoteBody.value) {
     // new Note
     for (let item of noteArray) {
-      if (highesItemId) {
-        if (highesItemId.id < item.id) {
-          highesItemId = item;
+      if (highesItemObject) {
+        if (highesItemObject.id < item.id) {
+          highesItemObject = item;
         }
       } else {
-        highesItemId = item;
+        highesItemObject = item;
       }
     }
 
     const newNoteObject = {};
-    newNoteObject.id = highesItemId ? highesItemId.id + 1 : 1;
+    newNoteObject.id = highesItemObject ? highesItemObject.id + 1 : 1;
     newNoteObject.title = currentNoteHeader.value;
     newNoteObject.content = currentNoteBody.value;
     newNoteObject.lastUpdated = Date.now();
@@ -177,3 +174,5 @@ function deleteCurrentNote() {
     saveToLocalStorage();
   }
 }
+
+document.addEventListener("DOMContentLoaded", init);
