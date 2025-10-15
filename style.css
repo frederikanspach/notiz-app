@@ -74,9 +74,13 @@ main {
 }
 
 .side-card-active {
-  background-color: #e4d5dc;
+  background-color: #ffd8ea;
   border-color: black;
   cursor: default;
+}
+
+.side-card-active:hover {
+  filter: none;
 }
 
 .side-card h2 {
