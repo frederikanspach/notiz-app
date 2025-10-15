@@ -135,6 +135,8 @@ function saveCurrentNote() {
       }
     }
   } else if (currentNoteHeader.value && currentNoteBody.value) {
+    console.log(currentNoteHeader.value);
+    console.log(currentNoteBody.value);
     // new Note
     const sortedNoteArray = [...noteArray].sort(
       (elementA, elementB) => elementA.id - elementB.id
@@ -144,18 +146,18 @@ function saveCurrentNote() {
       if (nextId < element.id) break;
       nextId++;
     }
+
+    const newNoteObject = {};
+    newNoteObject.id = nextId;
+    newNoteObject.title = currentNoteHeader.value;
+    newNoteObject.content = currentNoteBody.value;
+    newNoteObject.lastUpdated = Date.now();
+
+    noteArray.push(newNoteObject);
+    appendNotesToHTML();
+    resetNoteEditMode();
+    saveToLocalStorage();
   }
-
-  const newNoteObject = {};
-  newNoteObject.id = nextId;
-  newNoteObject.title = currentNoteHeader.value;
-  newNoteObject.content = currentNoteBody.value;
-  newNoteObject.lastUpdated = Date.now();
-
-  noteArray.push(newNoteObject);
-  appendNotesToHTML();
-  resetNoteEditMode();
-  saveToLocalStorage();
 }
 
 function deleteCurrentNote() {
