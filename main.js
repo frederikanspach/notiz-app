@@ -136,9 +136,11 @@ function saveCurrentNote() {
     }
   } else if (currentNoteHeader.value && currentNoteBody.value) {
     // new Note
-    noteArray.sort((elementA, elementB) => elementA.id - elementB.id);
+    const sortedNoteArray = [...noteArray].sort(
+      (elementA, elementB) => elementA.id - elementB.id
+    );
 
-    for (let element of noteArray) {
+    for (let element of sortedNoteArray) {
       if (nextId < element.id) break;
       nextId++;
     }
