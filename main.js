@@ -119,7 +119,7 @@ function resetNoteEditMode() {
 function saveCurrentNote() {
   const currentNoteHeader = document.getElementById("input-note-header");
   const currentNoteBody = document.getElementById("input-note-body");
-  let highesItemObject;
+  let nextId = 1;
 
   if (currentNoteHeader.dataset.noteId) {
     // Note update
@@ -136,27 +136,24 @@ function saveCurrentNote() {
     }
   } else if (currentNoteHeader.value && currentNoteBody.value) {
     // new Note
-    for (let item of noteArray) {
-      if (highesItemObject) {
-        if (highesItemObject.id < item.id) {
-          highesItemObject = item;
-        }
-      } else {
-        highesItemObject = item;
-      }
+    noteArray.sort((elementA, elementB) => elementA.id - elementB.id);
+
+    for (let element of noteArray) {
+      if (nextId !== element.id) break;
+      nextId++;
     }
-
-    const newNoteObject = {};
-    newNoteObject.id = highesItemObject ? highesItemObject.id + 1 : 1;
-    newNoteObject.title = currentNoteHeader.value;
-    newNoteObject.content = currentNoteBody.value;
-    newNoteObject.lastUpdated = Date.now();
-
-    noteArray.push(newNoteObject);
-    appendNotesToHTML();
-    resetNoteEditMode();
-    saveToLocalStorage();
   }
+
+  const newNoteObject = {};
+  newNoteObject.id = nextId ? nextId.id + 1 : 1;
+  newNoteObject.title = currentNoteHeader.value;
+  newNoteObject.content = currentNoteBody.value;
+  newNoteObject.lastUpdated = Date.now();
+
+  noteArray.push(newNoteObject);
+  appendNotesToHTML();
+  resetNoteEditMode();
+  saveToLocalStorage();
 }
 
 function deleteCurrentNote() {
