@@ -139,13 +139,13 @@ function saveCurrentNote() {
     noteArray.sort((elementA, elementB) => elementA.id - elementB.id);
 
     for (let element of noteArray) {
-      if (nextId !== element.id) break;
+      if (nextId < element.id) break;
       nextId++;
     }
   }
 
   const newNoteObject = {};
-  newNoteObject.id = nextId ? nextId.id + 1 : 1;
+  newNoteObject.id = nextId;
   newNoteObject.title = currentNoteHeader.value;
   newNoteObject.content = currentNoteBody.value;
   newNoteObject.lastUpdated = Date.now();
