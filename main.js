@@ -306,8 +306,6 @@ function deleteAllNotes() {
   const inputNoteHeader = document.getElementById("input-note-header");
   inputNoteHeader.value = "";
   resetNoteEditMode();
-
-  init();
 }
 
 function rot13() {
