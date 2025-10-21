@@ -256,6 +256,8 @@ function saveCurrentNote() {
     appendNotesToHTML();
     saveToLocalStorage();
 
+    currentNoteHeader.dataset.noteId = newNoteObject.id;
+
     const activeNote = document.getElementById(newNoteObject.id);
     activeNote.classList.add("side-card-active");
   }
