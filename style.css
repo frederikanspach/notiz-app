@@ -1,14 +1,37 @@
 :root {
-  --primary-color: #ffffff;
-  --primary-background: #df0071;
+  --background-primary: #f4f6f8;
+  --background-note: #ffffff;
+  --text-header: #007aff;
+  --text-main: #1d1d1f;
+  --text-sub: #636366;
+  --accent-color: #007aff;
+  --border-color: #d1d1d6;
+  --border-active-color: #007aff;
+
+  --dark-background-primary: #121212;
+  --dark-background-note: #1e1e1e;
+  --dark-text-header: #0a84ff;
+  --dark-text-main: #ededed;
+  --dark-text-sub: #8a8a8e;
+  --dark-accent-color: #0464c4;
+  --dark-border-color: #3a3a3c;
+  --dark-border-active-color: #0754a1;
+
+  --warn-color: #ff3b30;
+
   scroll-behavior: smooth;
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: Roboto, Arial, Tahoma;
 }
 
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+}
+
+body {
+  background-color: var(--background-primary);
+  color: var(--text-main);
 }
 
 main {
@@ -18,7 +41,7 @@ main {
 .left-side {
   width: 400px;
   height: 100lvh;
-  border-right: 1px solid #555;
+  border-right: 1px solid var(--border-color);
   padding: 1rem;
   overflow: auto;
 }
@@ -28,14 +51,21 @@ main {
   justify-content: center;
   align-items: center;
   width: 100%;
-  color: var(--primary-color);
+  color: var(--text-main);
   font-size: 1rem;
-  background-color: var(--primary-background);
+  background-color: var(--accent-color);
   border: none;
   border-radius: 5px;
-  padding: 1rem;
   cursor: pointer;
   transition: all 0.2s ease-in-out;
+  padding: 1rem;
+  margin: 0.5rem 0rem;
+}
+
+svg {
+  width: 50px;
+  height: 50px;
+  padding: 0.3rem;
 }
 
 .new-note-button img {
@@ -57,7 +87,8 @@ main {
   display: flex;
   flex-direction: column;
   width: 100%;
-  border: 0.5px solid #ccc;
+  border: 0.5px solid var(--border-color);
+  background-color: var(--background-note);
   border-radius: 5px;
   padding: 0.5rem;
   margin: 0.5rem 0rem;
@@ -65,7 +96,7 @@ main {
 }
 
 .side-card:hover {
-  filter: brightness(0.6);
+  filter: brightness(0.8);
   transition: all 0.2s ease-in-out;
 }
 
@@ -74,8 +105,9 @@ main {
 }
 
 .side-card-active {
-  background-color: #ffd8ea;
-  border-color: black;
+  background-color: var(--accent-color);
+  border-color: var(--border-active-color);
+  color: var(--text-main);
   cursor: default;
 }
 
@@ -90,7 +122,7 @@ main {
 }
 
 .side-card p {
-  color: #555;
+  color: var(--text-sub);
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
@@ -98,7 +130,7 @@ main {
 
 .time {
   font-size: 0.75rem;
-  color: #555;
+  color: var(--text-sub);
   text-align: right;
   font-style: italic;
 }
@@ -122,6 +154,8 @@ main {
   font-weight: 700;
   width: 100%;
   border: none;
+  color: var(--text-header);
+  background-color: var(--background-primary);
 }
 
 #input-note-header:focus {
@@ -130,14 +164,14 @@ main {
 
 .button-option {
   border: none;
-  background-color: #fff;
+  background-color: var(--background-primary);
   cursor: pointer;
   transition: all 0.2s ease-in-out;
 }
 
 .button-option img {
-  height: 75px;
-  width: 75px;
+  height: 50px;
+  width: 50px;
   border: none;
   border-radius: 5px;
 }
@@ -146,9 +180,33 @@ main {
   filter: brightness(0.8);
 }
 
+.delete-all-notes path {
+  stroke: var(--warn-color) !important;
+}
+
+.delete-all-notes circle {
+  fill: var(--warn-color) !important;
+}
+
+.button-mini {
+  display: inline-block;
+  background-color: transparent;
+  border: none;
+  vertical-align: bottom;
+}
+
+.button-mini svg {
+  height: 24px;
+  width: 24px;
+  display: inline-block;
+  background-color: transparent;
+  border: none;
+  vertical-align: bottom;
+}
+
 .note-body {
   width: 100%;
-  height: 100%;
+  height: 80lvh;
 }
 
 #input-note-body {
@@ -156,11 +214,13 @@ main {
   height: 100%;
   font-size: 1.5rem;
   border: none;
+  background-color: var(--background-primary);
+  color: var(--text-main);
 }
 
 #input-note-header::placeholder,
 #input-note-body::placeholder {
-  color: grey;
+  color: var(--text-sub);
 }
 
 #input-note-body:focus {
@@ -169,6 +229,92 @@ main {
 
 textarea {
   resize: none;
+}
+
+#bottom {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.mode-toggle {
+  border: none;
+  padding: 4px;
+  width: 72px;
+  border-radius: 20px;
+  cursor: pointer;
+  position: relative;
+}
+
+body[data-theme="light"] .mode-toggle {
+  background: linear-gradient(90deg, #fba53a 0%, #fce047 100%);
+}
+
+body[data-theme="dark"] .mode-toggle {
+  background: linear-gradient(90deg, #00487a 0%, #26a2e0 100%);
+}
+
+.mode-toggle > span {
+  position: relative;
+  display: block;
+  width: 32px;
+  height: 32px;
+  border-radius: 100%;
+  background-color: #0b2342;
+  box-shadow: 0px 1px 1px rgba(3, 7, 18, 0.06), 0px 2px 5px rgba(3, 7, 18, 0.12),
+    0px 5px 12px rgba(3, 7, 18, 0.18), 0px 10px 20px rgba(3, 7, 18, 0.24),
+    0px 15px 32px rgba(3, 7, 18, 0.3);
+  left: 0;
+  transition: all 300ms ease-in-out;
+}
+
+body[data-theme="light"] .mode-toggle > span {
+  background-color: white;
+  left: 100%;
+  transform: translateX(-100%);
+}
+
+.mode-toggle > span > img {
+  height: 24px;
+  width: 24px;
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  transition: all 300ms ease-in-out;
+}
+
+body[data-theme="dark"] .mode-toggle > span > img:nth-child(1) {
+  opacity: 0;
+}
+
+body[data-theme="dark"] .mode-toggle > span > img:nth-child(2) {
+  opacity: 1;
+}
+
+body[data-theme="light"] .mode-toggle > span > img:nth-child(1) {
+  opacity: 1;
+  transform: rotate(60deg);
+}
+
+body[data-theme="light"] .mode-toggle > span > img:nth-child(2) {
+  opacity: 0;
+  transform: rotate(60deg);
+}
+
+body[data-theme="dark"] {
+  /* Globale überschreiben */
+  background-color: var(--dark-background-primary);
+  color: var(--dark-text-main);
+
+  /* Standard-Variablen auf Dark-Werte */
+  --background-primary: var(--dark-background-primary);
+  --background-note: var(--dark-background-note);
+  --text-header: var(--dark-text-header);
+  --text-main: var(--dark-text-main);
+  --text-sub: var(--dark-text-sub);
+  --accent-color: var(--dark-accent-color);
+  --border-color: var(--dark-border-color);
 }
 
 @media (max-width: 900px) {

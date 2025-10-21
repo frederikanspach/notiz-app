@@ -4,22 +4,46 @@ const NOTE_STORAGE_KEY = "noteApp";
 let noteArray = [];
 
 function init() {
-  const saveNote = document.getElementById("save-note");
-  saveNote.addEventListener("click", () => {
+  const saveNoteListener = document.getElementById("save-note");
+  saveNoteListener.addEventListener("click", () => {
     saveCurrentNote();
   });
 
-  const deleteNote = document.getElementById("delete-note");
-  deleteNote.addEventListener("click", () => {
+  const deleteNoteListener = document.getElementById("delete-note");
+  deleteNoteListener.addEventListener("click", () => {
     deleteCurrentNote();
   });
 
-  const [newNoteButton] = document.getElementsByClassName("new-note-button");
-  newNoteButton.addEventListener("click", () => {
+  const deleteAllNotesListener = document.getElementById("delete-all");
+  deleteAllNotesListener.addEventListener("click", () => {
+    deleteAllNotes();
+  });
+
+  const [newNoteButtonListener] =
+    document.getElementsByClassName("new-note-button");
+  newNoteButtonListener.addEventListener("click", () => {
     resetNoteEditMode();
   });
 
+  const rot13ButtonListener = document.getElementById("rot13");
+  rot13ButtonListener.addEventListener("click", () => {
+    rot13();
+  });
+
+  const themeToggleListener = document.getElementById("theme-toggle");
+  themeToggleListener.addEventListener("click", () => {
+    const body = document.body;
+    const currentMode = body.getAttribute("data-theme");
+    body.setAttribute("data-theme", currentMode === "light" ? "dark" : "light");
+  });
+
   noteArray = loadFromLocalStorage();
+
+  if (noteArray.length === 0) {
+    noteArray = setInfoNote();
+    saveToLocalStorage();
+  }
+
   appendNotesToHTML();
 }
 
@@ -31,8 +55,22 @@ function saveToLocalStorage() {
   localStorage.setItem(NOTE_STORAGE_KEY, JSON.stringify(noteArray));
 }
 
+function setInfoNote() {
+  const infoNote = [
+    {
+      id: 1,
+      title: "Willkommen in der Notiz-App",
+      content:
+        "Funktionen\nOben links kann eine neue Notiz erstellt werden.\n\nOben rechts kann die Notiz gespeichert oder gelöscht werden.\n\nLinks in der Notiz-Sidebar können die Notizen über das kleine Lösch-Icon ebenfalls gelöscht werden.\n\nUnten rechts kann der Dark- und Light-Mode ausgewählt werden. Die App versucht sich erst einmal automatisch anzupassen.\n\nUnten rechts kann die Notiz mit dem Vorhängeschloss-Icon (Funktion Rot13) unleserlich gemacht werden. Die Notiz muss danach nochmal gespeichert werden, damit die Unleserlichkeit gültig bleibt.\n\nUnten rechts können über das rote Mülleimer-Icon ALLE Notizen auf einmal gelöscht werden!",
+      lastUpdated: Date.now(),
+    },
+  ];
+
+  return infoNote;
+}
+
 function appendNotesToHTML() {
-  // Sortieren des Arrays absteigend
+  // Sortieren des Arrays nach Datum absteigend
   const sortedNoteArray = noteArray.sort(
     (a, b) => b.lastUpdated - a.lastUpdated
   );
@@ -54,6 +92,60 @@ function appendNotesToHTML() {
     const newNoteLastUpdate = document.createElement("div");
     newNoteLastUpdate.classList.add("time");
     newNoteLastUpdate.textContent = formatDate(note.lastUpdated);
+
+    const newNoteDeleteButton = document.createElement("button");
+    newNoteDeleteButton.classList.add("button-mini");
+    newNoteDeleteButton.setAttribute("data-note-id", note.id);
+    newNoteDeleteButton.setAttribute("id", `delete-note-${note.id}`);
+    newNoteDeleteButton.innerHTML = `<svg
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M3 6H21"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+              <path
+                d="M19 6V20C19 21.1046 18.1046 22 17 22H7C5.89543 22 5 21.1046 5 20V6"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+              <path
+                d="M8 6V4C8 3.44772 8.44772 3 9 3H15C15.5523 3 16 3.44772 16 4V6"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+              <path
+                d="M10 11V17"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+              <path
+                d="M14 11V17"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
+          </button>`;
+    newNoteDeleteButton.addEventListener("click", (e) => {
+      // Stopped the higher listener
+      e.stopPropagation();
+      deleteCurrentNote(note.id);
+    });
+
+    newNoteLastUpdate.appendChild(newNoteDeleteButton);
 
     newNoteSection.appendChild(newNoteHeader);
     newNoteSection.appendChild(newNoteParagraph);
@@ -114,6 +206,11 @@ function resetNoteEditMode() {
 
   const inputNoteBody = document.getElementById("input-note-body");
   inputNoteBody.value = "";
+
+  const oldActiveNote = document.querySelector(".side-card-active");
+  if (oldActiveNote) {
+    oldActiveNote.classList.remove("side-card-active");
+  }
 }
 
 function saveCurrentNote() {
@@ -129,15 +226,17 @@ function saveCurrentNote() {
         item.content = currentNoteBody.value;
         item.lastUpdated = Date.now();
         appendNotesToHTML();
-        resetNoteEditMode();
         saveToLocalStorage();
+
+        const activeNote = document.getElementById(
+          currentNoteHeader.dataset.noteId
+        );
+        activeNote.classList.add("side-card-active");
         return;
       }
     }
   } else if (currentNoteHeader.value && currentNoteBody.value) {
-    console.log(currentNoteHeader.value);
-    console.log(currentNoteBody.value);
-    // new Note
+    // New Note
     const sortedNoteArray = [...noteArray].sort(
       (elementA, elementB) => elementA.id - elementB.id
     );
@@ -155,15 +254,24 @@ function saveCurrentNote() {
 
     noteArray.push(newNoteObject);
     appendNotesToHTML();
-    resetNoteEditMode();
     saveToLocalStorage();
+
+    const activeNote = document.getElementById(newNoteObject.id);
+    activeNote.classList.add("side-card-active");
   }
 }
 
-function deleteCurrentNote() {
-  const deleteId = Number(
-    document.getElementById("input-note-header").dataset.noteId
-  );
+function deleteCurrentNote(deleteId = false) {
+  if (!deleteId) {
+    deleteId = Number(
+      document.getElementById("input-note-header").dataset.noteId
+    );
+  }
+
+  const isConfirmed = confirm("Die Notiz wirklich löschen?");
+  if (!isConfirmed) {
+    return;
+  }
 
   if (deleteId) {
     const deleteElement = noteArray.findIndex(
@@ -171,9 +279,52 @@ function deleteCurrentNote() {
     );
     noteArray.splice(deleteElement, 1);
     appendNotesToHTML();
-    resetNoteEditMode();
     saveToLocalStorage();
+
+    const inputNoteHeader = document.getElementById("input-note-header");
+    inputNoteHeader.value = "";
   }
+  resetNoteEditMode();
+}
+
+function deleteAllNotes() {
+  if (noteArray.length === 0) {
+    return;
+  }
+
+  noteArray = [];
+
+  const isConfirmed = confirm(
+    "Bist du sicher, dass du ALLE Notizen löschen möchtest?"
+  );
+  if (!isConfirmed) {
+    return;
+  }
+
+  appendNotesToHTML();
+  saveToLocalStorage();
+  const inputNoteHeader = document.getElementById("input-note-header");
+  inputNoteHeader.value = "";
+  resetNoteEditMode();
+
+  init();
+}
+
+function rot13() {
+  const inputBody = document.getElementById("input-note-body");
+
+  if (!inputBody.value) {
+    return;
+  }
+
+  // rot13 von stackoverflow
+  inputBody.value = inputBody.value.replace(
+    /[a-z]/gi,
+    (c) =>
+      "NOPQRSTUVWXYZABCDEFGHIJKLMnopqrstuvwxyzabcdefghijklm"[
+        "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz".indexOf(c)
+      ]
+  );
 }
 
 document.addEventListener("DOMContentLoaded", init);

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Layer_2" data-name="Layer 2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40.19 38.46">
+  <defs>
+    <style>
+      /* .cls-1 wird zum Hauptkörper des Mondes (sanftes Silbergrau) */
+      .cls-1 {
+        fill: #E0E6EE; /* Sanftes, kühles Grau (Basis-Mondfarbe) */
+      }
+
+      /* .cls-2 wird zu einem Stern oder Highlight (helles Weiß) */
+      .cls-2 {
+        fill: #FFFFFF; /* Reines Weiß für einen schönen Glanzpunkt */
+      }
+    </style>
+  </defs>
+  <g id="Layer_1-2" data-name="Layer 1">
+    <g>
+      <path class="cls-1" d="M27.45,25.4c6.04-1.38,8.61-4.66,10.49-5.74.15-.09,2.09-.59,2.24,1.46.15,1.92-2.62,14.1-18.33,17.02C10.81,40.2,1.11,31.83.09,21.5-.86,11.82,5.47.83,15.76.03c1.28-.1,2.44-.06,2.81,1.79.09.43.21,1.4-1.15,2.79-.81.82-1.88,2.1-2.52,3.23-6.1,10.72,3.79,19.56,12.55,17.56Z"/>
+      <path class="cls-2" d="M32.18,5.4l.85,1.68c.11.22.31.38.55.44l1.83.45c1.29.32,1.49,2.07.3,2.67l-1.68.85c-.22.11-.38.31-.44.55l-.45,1.83c-.32,1.29-2.07,1.49-2.67.3l-.85-1.68c-.11-.22-.31-.38-.55-.44l-1.83-.45c-1.29-.32-1.49-2.07-.3-2.67l1.58-.8c.29-.14.49-.4.57-.71l.42-1.72c.32-1.29,2.07-1.49,2.67-.3Z"/>
+    </g>
+  </g>
+</svg>
