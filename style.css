@@ -326,3 +326,125 @@ body[data-theme="dark"] .mode-toggle {
 
 body[data-theme="light"] .mode-toggle > span {
   background-color: white;
+  left: 100%;
+  transform: translateX(-100%);
+}
+
+.mode-toggle > span > img {
+  height: 24px;
+  width: 24px;
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  transition: all 300ms ease-in-out;
+}
+
+body[data-theme="dark"] .mode-toggle > span > img:nth-child(1) {
+  opacity: 0;
+}
+
+body[data-theme="dark"] .mode-toggle > span > img:nth-child(2) {
+  opacity: 1;
+}
+
+body[data-theme="light"] .mode-toggle > span > img:nth-child(1) {
+  opacity: 1;
+  transform: rotate(60deg);
+}
+
+body[data-theme="light"] .mode-toggle > span > img:nth-child(2) {
+  opacity: 0;
+  transform: rotate(60deg);
+}
+
+/* ---------------------------------- */
+/* DARK MODE ANPASSUNGEN */
+/* ---------------------------------- */
+body[data-theme="dark"] {
+  /* Globale überschreiben */
+  background-color: var(--dark-background-primary);
+  color: var(--dark-text-main);
+
+  /* Standard-Variablen auf Dark-Werte */
+  --background-primary: var(--dark-background-primary);
+  --background-note: var(--dark-background-note);
+  --text-header: var(--dark-text-header);
+  --text-main: var(--dark-text-main);
+  --text-sub: var(--dark-text-sub);
+  --accent-color: var(--dark-accent-color);
+  --border-color: var(--dark-border-color);
+  
+  /* GLASS EFFEKT IM DARK MODE */
+  --glass-border-color: rgba(60, 60, 60, 0.5); 
+}
+
+body[data-theme="dark"] .left-side {
+  background-color: rgba(18, 18, 18, var(--glass-bg-opacity-dark));
+}
+
+body[data-theme="dark"] .side-header {
+  background-color: rgba(18, 18, 18, 0.4); /* Etwas höhere Opazität für Sticky */
+}
+
+/* ---------------------------------- */
+/* MOBILE ANPASSUNGEN (NEU VERKLEINERT) */
+/* ---------------------------------- */
+@media (max-width: 900px) {
+  /* Neue Verkleinerung für Icons */
+  .new-note-button img {
+    width: 20px; /* Reduziert von 25px */
+    height: 20px;
+  }
+
+  .button-option img {
+    height: 32px; /* Reduziert von 40px */
+    width: 32px;
+  }
+
+  .left-side {
+    width: 300px;
+    height: 100lvh;
+    padding: 0.3rem;
+  }
+
+  .new-note-button {
+    font-size: 1rem;
+    padding: 0.3rem;
+  }
+
+  /* Neue Verkleinerung für Text */
+  .side-card {
+    font-size: 0.7rem; /* Reduziert von 0.8rem */
+    padding: 0.3rem;
+    margin: 0.3rem 0rem;
+    gap: 0.3rem;
+  }
+
+  .time {
+    font-size: 0.7rem;
+  }
+
+  .right-side {
+    padding: 0.3rem;
+    gap: 0.3rem;
+  }
+
+  .note-header {
+    gap: 0.3rem;
+  }
+
+  #input-note-header {
+    font-size: 1.25rem; /* Reduziert von 1.5rem */
+    font-weight: 600;
+  }
+
+  /* Icons bleiben bei 32px, siehe oben */
+  /* .button-option img {
+    height: 32px; 
+    width: 32px;
+  } */
+
+  #input-note-body {
+    font-size: 0.9rem; /* Reduziert von 1rem */
+  }
+}
