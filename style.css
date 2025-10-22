@@ -1,4 +1,5 @@
 :root {
+  /* BESTEHENDE VARIABLEN */
   --background-primary: #f4f6f8;
   --background-note: #ffffff;
   --text-header: #007aff;
@@ -19,6 +20,13 @@
 
   --warn-color: #ff3b30;
 
+  /* NEUE LIQUID GLASS VARS */
+  --glass-blur: 20px; /* Stärke der Unschärfe für Sidebar */
+  --glass-header-blur: 10px; /* Leichtere Unschärfe für sticky Header */
+  --glass-bg-opacity-light: 0.8; /* Deckkraft des Glass-Hintergrunds Light Mode */
+  --glass-bg-opacity-dark: 0.2; /* Deckkraft des Glass-Hintergrunds Dark Mode */
+  --glass-border-color: rgba(255, 255, 255, 0.1); /* Helle, subtile Glas-Outline */
+
   scroll-behavior: smooth;
   font-family: Roboto, Arial, Tahoma;
 }
@@ -38,28 +46,67 @@ main {
   display: flex;
 }
 
+/* ---------------------------------- */
+/* LIQUID GLASS: SIDEBAR */
+/* ---------------------------------- */
 .left-side {
   width: 400px;
   height: 100lvh;
-  border-right: 1px solid var(--border-color);
   padding: 1rem;
   overflow: auto;
+  
+  /* GLASS EFFEKT */
+  background-color: rgba(244, 246, 248, var(--glass-bg-opacity-light));
+  border-right: 1px solid var(--glass-border-color); /* Subtile Glas-Linie */
+  backdrop-filter: blur(var(--glass-blur));
 }
 
+/* ---------------------------------- */
+/* LIQUID GLASS: STICKY HEADER */
+/* ---------------------------------- */
+.side-header {
+  position: sticky;
+  top: 0;
+  z-index: 100; /* Höher, um über der Liste zu schweben */
+  padding: 0 0 1rem 0;
+  
+  /* GLASS EFFEKT */
+  background-color: rgba(244, 246, 248, 0.9); /* Etwas weniger transparent als Sidebar */
+  backdrop-filter: blur(var(--glass-header-blur));
+}
+
+/* ---------------------------------- */
+/* LIQUID GLASS: NEW NOTE BUTTON (FAB LOOK) */
+/* ---------------------------------- */
 .new-note-button {
   display: flex;
   justify-content: center;
   align-items: center;
   width: 100%;
-  color: var(--text-main);
+  color: white; /* Textfarbe auf Weiß gesetzt für besseren Kontrast */
   font-size: 1rem;
-  background-color: var(--accent-color);
+  
+  /* NEUER STYLE: Tiefe und Liquid-Farbe */
+  background: linear-gradient(145deg, var(--accent-color) 0%, #0060c0 100%);
   border: none;
-  border-radius: 5px;
+  border-radius: 12px; /* Etwas runder */
   cursor: pointer;
-  transition: all 0.2s ease-in-out;
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94); /* Flüssigere Animation */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  
   padding: 1rem;
   margin: 0.5rem 0rem;
+}
+
+.new-note-button:hover {
+  /* filter: brightness(0.8); <- Entfernt */
+  transform: translateY(-2px); /* Subtiler "Lift"-Effekt */
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+}
+
+.new-note-button:active {
+  transform: translateY(1px); /* "Push"-Effekt */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
 
 svg {
@@ -73,31 +120,31 @@ svg {
   height: 50px;
 }
 
-.new-note-button:hover {
-  filter: brightness(0.8);
-}
-
-.side-header {
-  position: sticky;
-  top: 0;
-  z-index: 99;
-}
-
+/* ---------------------------------- */
+/* LIQUID GLASS: NOTE CARDS (LAYERED LOOK) */
+/* ---------------------------------- */
 .side-card {
   display: flex;
   flex-direction: column;
   width: 100%;
-  border: 0.5px solid var(--border-color);
+  
   background-color: var(--background-note);
-  border-radius: 5px;
-  padding: 0.5rem;
+  
+  /* NEUER STYLE: Tiefe und Layering */
+  border: 0.5px solid var(--glass-border-color);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05), 0 1px 3px rgba(0, 0, 0, 0.02);
+  border-radius: 10px; /* Runder für einen flüssigeren Look */
+  padding: 0.75rem;
   margin: 0.5rem 0rem;
   gap: 0.5rem;
+  transition: all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
 .side-card:hover {
-  filter: brightness(0.8);
-  transition: all 0.2s ease-in-out;
+  filter: none; /* filter: brightness(0.8) entfernt */
+  transform: translateY(-2px); /* Subtiler "Lift" bei Hover */
+  box-shadow: 0 8px 12px rgba(0, 0, 0, 0.1), 0 3px 6px rgba(0, 0, 0, 0.05); /* Stärkerer Schatten */
+  transition: all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
 .side-card:not(.side-card-active) {
@@ -106,13 +153,21 @@ svg {
 
 .side-card-active {
   background-color: var(--accent-color);
-  border-color: var(--border-active-color);
-  color: var(--text-main);
+  border-color: var(--accent-color);
+  color: #ffffff; /* Text wird weiß */
   cursor: default;
+  box-shadow: 0 0 15px rgba(0, 122, 255, 0.5); /* Leuchtender Schatten */
 }
 
 .side-card-active:hover {
   filter: none;
+  transform: none;
+  box-shadow: 0 0 15px rgba(0, 122, 255, 0.5);
+}
+
+.side-card-active p,
+.side-card-active .time {
+  color: rgba(255, 255, 255, 0.8); /* Subtiler Text */
 }
 
 .side-card h2 {
@@ -271,105 +326,3 @@ body[data-theme="dark"] .mode-toggle {
 
 body[data-theme="light"] .mode-toggle > span {
   background-color: white;
-  left: 100%;
-  transform: translateX(-100%);
-}
-
-.mode-toggle > span > img {
-  height: 24px;
-  width: 24px;
-  position: absolute;
-  top: 4px;
-  left: 4px;
-  transition: all 300ms ease-in-out;
-}
-
-body[data-theme="dark"] .mode-toggle > span > img:nth-child(1) {
-  opacity: 0;
-}
-
-body[data-theme="dark"] .mode-toggle > span > img:nth-child(2) {
-  opacity: 1;
-}
-
-body[data-theme="light"] .mode-toggle > span > img:nth-child(1) {
-  opacity: 1;
-  transform: rotate(60deg);
-}
-
-body[data-theme="light"] .mode-toggle > span > img:nth-child(2) {
-  opacity: 0;
-  transform: rotate(60deg);
-}
-
-body[data-theme="dark"] {
-  /* Globale überschreiben */
-  background-color: var(--dark-background-primary);
-  color: var(--dark-text-main);
-
-  /* Standard-Variablen auf Dark-Werte */
-  --background-primary: var(--dark-background-primary);
-  --background-note: var(--dark-background-note);
-  --text-header: var(--dark-text-header);
-  --text-main: var(--dark-text-main);
-  --text-sub: var(--dark-text-sub);
-  --accent-color: var(--dark-accent-color);
-  --border-color: var(--dark-border-color);
-}
-
-@media (max-width: 900px) {
-  .new-note-button img {
-    width: 25px;
-    height: 25px;
-  }
-
-  .button-option img {
-    height: 40px;
-    width: 40px;
-  }
-
-  .left-side {
-    width: 300px;
-    height: 100lvh;
-    padding: 0.3rem;
-  }
-
-  .new-note-button {
-    font-size: 1rem;
-    padding: 0.3rem;
-  }
-
-  .side-card {
-    font-size: 0.8rem;
-    padding: 0.3rem;
-    margin: 0.3rem 0rem;
-    gap: 0.3rem;
-  }
-
-  .time {
-    font-size: 0.7rem;
-  }
-
-  .right-side {
-    padding: 0.3rem;
-    gap: 0.3rem;
-  }
-
-  .note-header {
-    gap: 0.3rem;
-  }
-
-  #input-note-header {
-    font-size: 1.5rem;
-    font-weight: 600;
-  }
-
-  .button-option img {
-    height: 40px;
-    width: 40px;
-  }
-
-  #input-note-body {
-    font-size: 1rem;
-  }
-}
