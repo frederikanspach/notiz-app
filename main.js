@@ -294,14 +294,14 @@ function deleteAllNotes() {
     return;
   }
 
-  noteArray = [];
-
   const isConfirmed = confirm(
     "Bist du sicher, dass du ALLE Notizen löschen möchtest?"
   );
   if (!isConfirmed) {
     return;
   }
+
+  noteArray = [];
 
   appendNotesToHTML();
   saveToLocalStorage();
