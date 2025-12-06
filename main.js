@@ -4,6 +4,8 @@ const NOTE_STORAGE_KEY = "noteApp";
 let noteArray = [];
 
 function init() {
+  document.getElementById("input-note-header").focus();
+
   const saveNoteListener = document.getElementById("save-note");
   saveNoteListener.addEventListener("click", () => {
     saveCurrentNote();
@@ -200,6 +202,8 @@ function showNoteInEditMode(noteId) {
 }
 
 function resetNoteEditMode() {
+  document.getElementById("input-note-header").focus();
+
   const inputNoteHeader = document.getElementById("input-note-header");
   inputNoteHeader.value = "";
   delete inputNoteHeader.dataset.noteId;
@@ -214,6 +218,8 @@ function resetNoteEditMode() {
 }
 
 function saveCurrentNote() {
+  document.getElementById("input-note-header").focus();
+
   const currentNoteHeader = document.getElementById("input-note-header");
   const currentNoteBody = document.getElementById("input-note-body");
   let nextId = 1;
